@@ -7,7 +7,7 @@ description: |-
 enabled: true
 severity: Medium
 query_text: |-
-  %ingest.source_type:cloudflare
+  %ingest.source_type:"cloudflare:http"
   ClientRequestUserAgent:*
   (not ClientRequestUserAgent:(""))
   | stats countdistinct(ClientRequestUserAgent) as n_user_agents by ClientIP

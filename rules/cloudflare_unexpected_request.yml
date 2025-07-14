@@ -6,7 +6,7 @@ description: |-
 enabled: true
 severity: Medium
 query_text: |-
-  %ingest.source_type:cloudflare
+  %ingest.source_type:"cloudflare:http"
   ClientRequestMethod:GET
   (not ClientRequestBytes = 0)
   ClientRequestURI:('/admin' '/admin.php' 'wp-admin' '.htaccess' '/etc/shadow' '/etc/passwd' '/etc/hosts' '/etc/ssh/')
