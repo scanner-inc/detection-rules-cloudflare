@@ -6,7 +6,7 @@ description: |-
 enabled: true
 severity: Medium
 query_text: |-
-  %ingest.source_type:"cloudflare:http"
+  %ingest.source_type:cloudflare
   ClientIPClass:(unknown badHost greylist securityScanner scan tor)
   | groupbycount(ClientIP)
   | where @q.count > 0
