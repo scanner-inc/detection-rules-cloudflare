@@ -9,7 +9,7 @@ severity: Medium
 query_text: |-
   %ingest.source_type:cloudflare
   ClientRequestMethod:(POST PUT)
-  ClientRequestURI:(.jpg .jpeg .gif .png .icon .ico .xml .swf .svg .ppt .pttx .doc .docx .rtf .pdf .tif .zip .mov)
+  ClientRequestURI:(".jpg" ".jpeg" ".gif" ".png" ".icon" ".ico" ".xml" ".swf" ".svg" ".ppt" ".pttx" ".doc" ".docx" ".rtf" ".pdf" ".tif" ".zip" ".mov")
   | groupbycount(ClientIP)
   | where @q.count > 0
 time_range_s: 300
