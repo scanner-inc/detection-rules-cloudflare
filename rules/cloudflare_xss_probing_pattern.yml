@@ -6,7 +6,7 @@ description: |-
 enabled: true
 severity: Medium
 query_text: |-
-  %ingest.source_type:cloudflare
+  @scnr.source_type:cloudflare
   ClientRequestMethod:(POST PUT)
   ClientRequestURI:('alert(' 'alert%28' 'String.fromCharCode(' 'expression(alert')
   | groupbycount(ClientIP)
