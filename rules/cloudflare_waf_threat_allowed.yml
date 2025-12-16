@@ -7,7 +7,7 @@ description: |-
 enabled: true
 severity: High
 query_text: |-
-  %ingest.source_type:cloudflare
+  @scnr.source_type:cloudflare
   (WAFRuleID:* or WAFRuleMessage:*)
   WAFAction:Allow
   | groupbycount(ClientIP)

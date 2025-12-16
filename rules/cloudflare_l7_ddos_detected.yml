@@ -5,7 +5,7 @@ description: |-
 enabled: true
 severity: Medium
 query_text: |-
-  %ingest.source_type:cloudflare
+  @scnr.source_type:cloudflare
   Source:l7ddos
 time_range_s: 300
 run_frequency_s: 60
