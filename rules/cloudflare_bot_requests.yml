@@ -10,7 +10,6 @@ description: |-
   automated requests.
 
   The default threshold is 600 requests per 5 minutes (2 RPS).
-enabled: true
 severity: Low
 query_text: |-
   @scnr.source_type:cloudflare

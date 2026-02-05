@@ -4,7 +4,6 @@ description: |-
   Detect POST or PUT requests to URIs that typically don't accept
   POST/PUT requests, which may indicate file upload attempts, web
   shell activity, or other malicious file operations.
-enabled: true
 severity: Medium
 query_text: |-
   @scnr.source_type:cloudflare

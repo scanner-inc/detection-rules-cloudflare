@@ -3,7 +3,6 @@ name: Cloudflare XSS Probing Pattern
 description: |-
   Detect XSS (Cross-Site Scripting) probing patterns in web requests,
   which may indicate attack attempts against web applications.
-enabled: true
 severity: Medium
 query_text: |-
   @scnr.source_type:cloudflare

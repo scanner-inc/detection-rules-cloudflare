@@ -2,7 +2,6 @@
 name: Cloudflare L7 DDoS Detected
 description: |-
   Detect a Layer 7 Distributed Denial of Service (DDoS) attack from Cloudflare firewall logs.
-enabled: true
 severity: Medium
 query_text: |-
   @scnr.source_type:cloudflare

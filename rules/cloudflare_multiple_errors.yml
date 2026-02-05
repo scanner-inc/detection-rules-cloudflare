@@ -3,7 +3,6 @@ name: Cloudflare Multiple Error Requests from Single IP
 description: |-
   Detect when a single IP address generates a high volume of error responses,
   which may indicate scanning, enumeration, or attack attempts.
-enabled: true
 severity: Low
 query_text: |-
   @scnr.source_type:cloudflare

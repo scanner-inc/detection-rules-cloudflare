@@ -3,7 +3,6 @@ name: Cloudflare Bad Client IP
 description: |-
   Detect requests from IP addresses that have been classified as having a bad reputation,
   including unknown, badHost, greylist, securityScanner, scan, or tor classifications.
-enabled: true
 severity: Medium
 query_text: |-
   @scnr.source_type:cloudflare

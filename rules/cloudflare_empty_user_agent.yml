@@ -3,7 +3,6 @@ name: Cloudflare Empty User Agent
 description: |-
   Detect HTTP requests that have an empty or missing User-Agent header,
   which can indicate automated attacks, bots, or malicious scanning activity.
-enabled: true
 severity: Medium
 query_text: |-
   @scnr.source_type:cloudflare

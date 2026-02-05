@@ -4,7 +4,6 @@ description: |-
   Detect when Cloudflare's Web Application Firewall (WAF) detects
   a threat but takes an "Allow" action instead of blocking it,
   which may indicate a misconfiguration or bypass attempt.
-enabled: true
 severity: High
 query_text: |-
   @scnr.source_type:cloudflare

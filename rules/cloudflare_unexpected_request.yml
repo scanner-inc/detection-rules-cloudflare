@@ -3,7 +3,6 @@ name: Cloudflare Unexpected Client Request
 description: |-
   Detect GET requests to URIs that are commonly targeted by attackers,
   such as admin panels, configuration files, and system files.
-enabled: true
 severity: Medium
 query_text: |-
   @scnr.source_type:cloudflare
