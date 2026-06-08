@@ -5,7 +5,7 @@ description: |-
   which may indicate attack attempts against web applications.
 severity: Medium
 query_text: |-
-  @scnr.source_type:cloudflare
+  @scnr.source_type:"cloudflare:http"
   ClientRequestMethod:(POST PUT)
   ClientRequestURI:('alert(' 'alert%28' 'String.fromCharCode(' 'expression(alert')
   | groupbycount(ClientIP)
@@ -19,3 +19,19 @@ tags:
 - techniques.t1190.exploit_public_facing_application
 - techniques.t1133.external_remote_services
 - source.cloudflare
+tests:
+  - name: Alert triggered for a POST containing an XSS alert payload
+    now_timestamp: "2026-06-08T00:03:00.000Z"
+    dataset_inline: |
+      {"timestamp": "2026-06-08T00:02:30.000Z", "@scnr.source_type": "cloudflare:http", "ClientRequestMethod": "POST", "ClientRequestURI": "/search?q=alert(1)", "ClientIP": "1.2.3.4"}
+    expected_detection_result: true
+  - name: No alert for a GET containing the same payload
+    now_timestamp: "2026-06-08T00:03:00.000Z"
+    dataset_inline: |
+      {"timestamp": "2026-06-08T00:02:30.000Z", "@scnr.source_type": "cloudflare:http", "ClientRequestMethod": "GET", "ClientRequestURI": "/search?q=alert(1)", "ClientIP": "1.2.3.4"}
+    expected_detection_result: false
+  - name: No alert for a benign POST
+    now_timestamp: "2026-06-08T00:03:00.000Z"
+    dataset_inline: |
+      {"timestamp": "2026-06-08T00:02:30.000Z", "@scnr.source_type": "cloudflare:http", "ClientRequestMethod": "POST", "ClientRequestURI": "/search?q=hello", "ClientIP": "1.2.3.4"}
+    expected_detection_result: false

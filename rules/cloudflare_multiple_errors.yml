@@ -5,7 +5,7 @@ description: |-
   which may indicate scanning, enumeration, or attack attempts.
 severity: Low
 query_text: |-
-  @scnr.source_type:cloudflare
+  @scnr.source_type:"cloudflare:http"
   ClientRequestMethod:GET
   EdgeResponseStatus >= 400
   | groupbycount(ClientIP)
@@ -19,3 +19,14 @@ tags:
 - techniques.t1190.exploit_public_facing_application
 - techniques.t1133.external_remote_services
 - source.cloudflare
+tests:
+  - name: No alert when error count is below threshold
+    now_timestamp: "2026-06-08T00:03:00.000Z"
+    dataset_inline: |
+      {"timestamp": "2026-06-08T00:02:30.000Z", "@scnr.source_type": "cloudflare:http", "ClientRequestMethod": "GET", "EdgeResponseStatus": 404, "ClientIP": "1.2.3.4"}
+    expected_detection_result: false
+  - name: No alert for successful GET responses
+    now_timestamp: "2026-06-08T00:03:00.000Z"
+    dataset_inline: |
+      {"timestamp": "2026-06-08T00:02:30.000Z", "@scnr.source_type": "cloudflare:http", "ClientRequestMethod": "GET", "EdgeResponseStatus": 200, "ClientIP": "1.2.3.4"}
+    expected_detection_result: false

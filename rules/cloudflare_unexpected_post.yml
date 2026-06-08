@@ -6,7 +6,7 @@ description: |-
   shell activity, or other malicious file operations.
 severity: Medium
 query_text: |-
-  @scnr.source_type:cloudflare
+  @scnr.source_type:"cloudflare:http"
   ClientRequestMethod:(POST PUT)
   ClientRequestURI:(".jpg" ".jpeg" ".gif" ".png" ".icon" ".ico" ".xml" ".swf" ".svg" ".ppt" ".pttx" ".doc" ".docx" ".rtf" ".pdf" ".tif" ".zip" ".mov")
   | groupbycount(ClientIP)
@@ -21,3 +21,19 @@ tags:
 - techniques.t1505.server_software_component
 - techniques.t1071.application_layer_protocol
 - source.cloudflare
+tests:
+  - name: Alert triggered for a POST to a static image asset
+    now_timestamp: "2026-06-08T00:03:00.000Z"
+    dataset_inline: |
+      {"timestamp": "2026-06-08T00:02:30.000Z", "@scnr.source_type": "cloudflare:http", "ClientRequestMethod": "POST", "ClientRequestURI": "/assets/photo.jpg", "ClientIP": "1.2.3.4"}
+    expected_detection_result: true
+  - name: No alert for a GET to a static image asset
+    now_timestamp: "2026-06-08T00:03:00.000Z"
+    dataset_inline: |
+      {"timestamp": "2026-06-08T00:02:30.000Z", "@scnr.source_type": "cloudflare:http", "ClientRequestMethod": "GET", "ClientRequestURI": "/assets/photo.jpg", "ClientIP": "1.2.3.4"}
+    expected_detection_result: false
+  - name: No alert for a POST to a normal API path
+    now_timestamp: "2026-06-08T00:03:00.000Z"
+    dataset_inline: |
+      {"timestamp": "2026-06-08T00:02:30.000Z", "@scnr.source_type": "cloudflare:http", "ClientRequestMethod": "POST", "ClientRequestURI": "/api/v1/orders", "ClientIP": "1.2.3.4"}
+    expected_detection_result: false

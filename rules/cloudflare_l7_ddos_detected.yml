@@ -15,3 +15,14 @@ tags:
 - techniques.t1499.endpoint_denial_of_service
 - techniques.t1498.network_denial_of_service
 - source.cloudflare
+tests:
+  - name: Alert triggered for an L7 DDoS firewall source
+    now_timestamp: "2026-06-08T00:03:00.000Z"
+    dataset_inline: |
+      {"timestamp": "2026-06-08T00:02:30.000Z", "@scnr.source_type": "cloudflare:http", "Source": "l7ddos", "ClientIP": "1.2.3.4"}
+    expected_detection_result: true
+  - name: No alert for non-DDoS firewall sources
+    now_timestamp: "2026-06-08T00:03:00.000Z"
+    dataset_inline: |
+      {"timestamp": "2026-06-08T00:02:30.000Z", "@scnr.source_type": "cloudflare:http", "Source": "waf", "ClientIP": "1.2.3.4"}
+    expected_detection_result: false

@@ -12,7 +12,7 @@ description: |-
   The default threshold is 600 requests per 5 minutes (2 RPS).
 severity: Low
 query_text: |-
-  @scnr.source_type:cloudflare
+  @scnr.source_type:"cloudflare:http"
   BotScore < 30 and BotScore > 0
   | groupbycount(ClientIP)
   | where @q.count > 600
@@ -24,3 +24,14 @@ tags:
 - tactics.ta0040.impact
 - techniques.t1499.endpoint_denial_of_service
 - source.cloudflare
+tests:
+  - name: No alert when low-bot-score request count is below threshold
+    now_timestamp: "2026-06-08T00:03:00.000Z"
+    dataset_inline: |
+      {"timestamp": "2026-06-08T00:02:30.000Z", "@scnr.source_type": "cloudflare:http", "BotScore": 10, "ClientIP": "1.2.3.4", "ClientRequestMethod": "GET"}
+    expected_detection_result: false
+  - name: No alert when bot score is high (likely human or verified)
+    now_timestamp: "2026-06-08T00:03:00.000Z"
+    dataset_inline: |
+      {"timestamp": "2026-06-08T00:02:30.000Z", "@scnr.source_type": "cloudflare:http", "BotScore": 80, "ClientIP": "1.2.3.4", "ClientRequestMethod": "GET"}
+    expected_detection_result: false

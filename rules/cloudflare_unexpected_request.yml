@@ -5,7 +5,7 @@ description: |-
   such as admin panels, configuration files, and system files.
 severity: Medium
 query_text: |-
-  @scnr.source_type:cloudflare
+  @scnr.source_type:"cloudflare:http"
   ClientRequestMethod:GET
   (not ClientRequestBytes = 0)
   ClientRequestURI:('/admin' '/admin.php' 'wp-admin' '.htaccess' '/etc/shadow' '/etc/passwd' '/etc/hosts' '/etc/ssh/')
@@ -20,3 +20,19 @@ tags:
 - techniques.t1190.exploit_public_facing_application
 - techniques.t1133.external_remote_services
 - source.cloudflare
+tests:
+  - name: Alert triggered for a GET to a sensitive admin path with a request body
+    now_timestamp: "2026-06-08T00:03:00.000Z"
+    dataset_inline: |
+      {"timestamp": "2026-06-08T00:02:30.000Z", "@scnr.source_type": "cloudflare:http", "ClientRequestMethod": "GET", "ClientRequestURI": "/admin.php", "ClientRequestBytes": 128, "ClientIP": "1.2.3.4"}
+    expected_detection_result: true
+  - name: No alert when the sensitive-path request has an empty body
+    now_timestamp: "2026-06-08T00:03:00.000Z"
+    dataset_inline: |
+      {"timestamp": "2026-06-08T00:02:30.000Z", "@scnr.source_type": "cloudflare:http", "ClientRequestMethod": "GET", "ClientRequestURI": "/admin.php", "ClientRequestBytes": 0, "ClientIP": "1.2.3.4"}
+    expected_detection_result: false
+  - name: No alert for a normal path
+    now_timestamp: "2026-06-08T00:03:00.000Z"
+    dataset_inline: |
+      {"timestamp": "2026-06-08T00:02:30.000Z", "@scnr.source_type": "cloudflare:http", "ClientRequestMethod": "GET", "ClientRequestURI": "/home", "ClientRequestBytes": 128, "ClientIP": "1.2.3.4"}
+    expected_detection_result: false
